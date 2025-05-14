@@ -1,4 +1,4 @@
-package org.acme;
+package davincif.the_budget_project;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;

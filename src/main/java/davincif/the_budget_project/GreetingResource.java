@@ -1,4 +1,4 @@
-package org.acme;
+package davincif.the_budget_project;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
