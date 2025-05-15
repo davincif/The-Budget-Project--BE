@@ -1,0 +1,158 @@
+openapi: 3.1.0
+
+info:
+  title: The Budget Project
+  description: ""
+  version: 1.0.0
+tags: []
+
+paths:
+  /login/register:
+    post:
+      summary: register
+      deprecated: false
+      description: ""
+      tags: []
+      parameters:
+        - name: email
+          in: query
+          description: ""
+          required: false
+          example: fulano@gmail.com
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ""
+          required: false
+          example: v3ryStr0ngP@sswrod
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "User Registered"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "409":
+          description: >-
+            The user already exists in the server - maybe get him to login page.
+          $ref: "#/components/responses/ConflictError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security: []
+
+  /login:
+    post:
+      summary: log in
+      deprecated: false
+      description: ""
+      operationId: logIn
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: >-
+            The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+          headers: {}
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "404":
+          description: >-
+            The user does not exist in the system - That could be an invitation
+            for registry
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security: []
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "S3M2"
+        friendlyMessage:
+          type: string
+          example: "Date of birth missing"
+        technicalMessage:
+          type: string
+          example: "incorrect format of 'brithday: ISO8601 string'"
+        details:
+          type: object
+          properties: {}
+      required:
+        - code
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: fulano@gmail.com
+        password:
+          type: string
+          example: v3ryStr0ngP@sswrod
+      required:
+        - email
+        - password
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+        - token
+
+  securitySchemes: {}
+
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    BadRequestError:
+      description: >-
+        The server couldn't process the given parameters. Make sure they are
+        being passed correctly.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    NotFoundError:
+      description: >-
+        The resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    ConflictError:
+      description: >-
+        The request gets in conflict with the current state of the server.
+        Therefor it was not performed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+servers:
+  - url: localhost:8080
+    description: local
+
+security: []

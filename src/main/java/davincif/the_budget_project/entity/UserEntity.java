@@ -17,24 +17,29 @@ import lombok.Getter;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Getter
     private UUID id;
 
     @NotBlank
+    @Getter
     private String Email;
 
     @NotBlank
+    @Getter
+    private String Password;
+
+    @Getter
     private String Name;
 
     @Getter
     private String NickName;
 
-    @NotBlank
-    private String Password;
-
     @NotNull
+    @Getter
     private boolean isActive;
 
     @NotNull
+    @Getter
     private LocalDate CreatedAt;
 
     @Getter
