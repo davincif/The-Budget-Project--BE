@@ -16,10 +16,8 @@ public class LoginController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response login() {
-        ErrorResponsePresenter<String> notImplementedResponse = ErrorResponsePresenter.notImplemented();
-
         return Response.status(501)
-                .entity(notImplementedResponse)
+                .entity(ErrorResponsePresenter.notImplemented())
                 .build();
     }
 
@@ -27,10 +25,8 @@ public class LoginController {
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
     public Response register() {
-        ErrorResponsePresenter<String> notImplementedResponse = ErrorResponsePresenter.notImplemented();
-
         return Response.status(501)
-                .entity(notImplementedResponse)
+                .entity(ErrorResponsePresenter.notImplemented())
                 .build();
     }
 }

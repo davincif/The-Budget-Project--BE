@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 
 @Entity
 @Table(name = "users")
@@ -18,27 +19,27 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotNull
     @NotBlank
     private String Email;
 
-    @NotNull
     @NotBlank
     private String Name;
 
-    @NotNull
+    @Getter
+    private String NickName;
+
     @NotBlank
     private String Password;
 
     @NotNull
-    @NotBlank
     private boolean isActive;
 
     @NotNull
-    @NotBlank
     private LocalDate CreatedAt;
 
+    @Getter
     private LocalDate UpdatedAt;
-    private String NickName;
+
+    @Getter
     private LocalDate BirthDay;
 }
