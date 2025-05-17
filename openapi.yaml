@@ -27,23 +27,14 @@ paths:
       deprecated: false
       description: ""
       tags: []
-      parameters:
-        - name: email
-          in: query
-          description: ""
-          required: false
-          example: fulano@gmail.com
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: ""
-          required: false
-          example: v3ryStr0ngP@sswrod
-          schema:
-            type: string
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
       responses:
-        "200":
+        "201":
           description: "User Registered"
         "400":
           $ref: "#/components/responses/BadRequestError"
