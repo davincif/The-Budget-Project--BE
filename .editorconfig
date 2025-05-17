@@ -1,0 +1,36 @@
+# .editorconfig
+
+# top-most EditorConfig file
+root = true
+
+# Global settings for all files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# Specific settings for Java files
+[*.java]
+indent_style = space
+indent_size = 4
+max_line_length = 100
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# XML files (like pom.xml)
+[*.xml]
+indent_style = space
+indent_size = 2
+
+# YAML files (application.yml etc.)
+[*.yml]
+indent_style = space
+indent_size = 2
+
+# Markdown and text files
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off

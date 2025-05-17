@@ -1,0 +1,13 @@
+{
+    "plugins": ["prettier-plugin-java"],
+    "tabWidth": 4,
+    "useTabs": false,
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": false,
+    "bracketSpacing": true,
+    "javaBracketSameLine": false,
+    "javaSpacesInsideParentheses": false,
+    "javaSortImports": true
+  }
+  

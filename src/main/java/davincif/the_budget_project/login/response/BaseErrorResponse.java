@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License
 */
 
-package davincif.the_budget_project.Presenter;
+package davincif.the_budget_project.login.response;
 
 import java.util.Optional;
-
 import lombok.Getter;
 
-public class ErrorResponsePresenter<T> {
+public class BaseErrorResponse<T> {
+
     @Getter
     private String code;
 
@@ -33,35 +33,34 @@ public class ErrorResponsePresenter<T> {
     @Getter
     private Optional<T> details;
 
-    static public ErrorResponsePresenter<String> notImplemented() {
-        return new ErrorResponsePresenter<String>()
-                .setCode("501")
-                .setFriendlyMessage(Optional.of("This method ain't implemented yet"))
-                .setTechnicalMessage(Optional.of("NOT IMPLEMENTED"));
+    public static BaseErrorResponse<String> notImplemented() {
+        return new BaseErrorResponse<String>()
+            .setCode("501")
+            .setFriendlyMessage(Optional.of("This method ain't implemented yet"))
+            .setTechnicalMessage(Optional.of("NOT IMPLEMENTED"));
     }
 
-    public ErrorResponsePresenter<T> setCode(String code) {
+    public BaseErrorResponse<T> setCode(String code) {
         this.code = code;
 
         return this;
     }
 
-    public ErrorResponsePresenter<T> setFriendlyMessage(Optional<String> friendlyMessage) {
+    public BaseErrorResponse<T> setFriendlyMessage(Optional<String> friendlyMessage) {
         this.friendlyMessage = friendlyMessage;
 
         return this;
     }
 
-    public ErrorResponsePresenter<T> setTechnicalMessage(Optional<String> technicalMessage) {
+    public BaseErrorResponse<T> setTechnicalMessage(Optional<String> technicalMessage) {
         this.technicalMessage = technicalMessage;
 
         return this;
     }
 
-    public ErrorResponsePresenter<T> setDetails(Optional<T> details) {
+    public BaseErrorResponse<T> setDetails(Optional<T> details) {
         this.details = details;
 
         return this;
     }
-
 }

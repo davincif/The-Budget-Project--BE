@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License
 */
 
-package davincif.the_budget_project.controller;
+package davincif.the_budget_project.login.controller;
 
-import davincif.the_budget_project.Presenter.ErrorResponsePresenter;
+import davincif.the_budget_project.login.response.BaseErrorResponse;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -29,20 +29,20 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class LoginController {
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response login() {
-        return Response.status(501)
-                .entity(ErrorResponsePresenter.notImplemented())
-                .build();
-    }
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response login() {
+    return Response.status(501)
+      .entity(BaseErrorResponse.notImplemented())
+      .build();
+  }
 
-    @POST()
-    @Path("/register")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response register() {
-        return Response.status(501)
-                .entity(ErrorResponsePresenter.notImplemented())
-                .build();
-    }
+  @POST
+  @Path("/register")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response register() {
+    return Response.status(501)
+      .entity(BaseErrorResponse.notImplemented())
+      .build();
+  }
 }

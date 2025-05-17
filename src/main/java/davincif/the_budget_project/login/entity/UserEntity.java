@@ -14,10 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License
 */
 
-package davincif.the_budget_project.entity;
-
-import java.time.LocalDate;
-import java.util.UUID;
+package davincif.the_budget_project.login.entity;
 
 import io.smallrye.common.constraint.NotNull;
 import jakarta.persistence.Entity;
@@ -26,11 +23,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.util.UUID;
 import lombok.Getter;
 
 @Entity
 @Table(name = "users")
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Getter
