@@ -17,9 +17,11 @@ limitations under the License
 package davincif.the_budget_project.login.controller;
 
 import davincif.the_budget_project.login.dto.UserDTO;
+import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.response.BaseErrorResponse;
 import davincif.the_budget_project.login.service.UserService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -45,8 +47,16 @@ public class LoginController {
     @POST
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register() {
+    public Response register(@Valid LoginRequest loginRequest) {
         Optional<UserDTO> user = userService.searchUser("test");
+
+        if (user.isPresent()) {
+            BaseErrorResponse<Void> existentUserResponse = new BaseErrorResponse<Void>()
+                .setCode("409")
+                .setFriendlyMessage("This user already exists, try logging in");
+
+            return Response.status(409).entity(existentUserResponse).build();
+        }
 
         return Response.status(501).entity(BaseErrorResponse.notImplemented()).build();
     }

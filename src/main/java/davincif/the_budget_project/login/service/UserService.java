@@ -10,12 +10,12 @@ import java.util.Optional;
 public class UserService {
 
     public Optional<UserDTO> searchUser(String email) {
-        UserEntity user = UserEntity.find("Email", email).firstResult();
+        Optional<UserEntity> user = UserEntity.find("email", email).firstResultOptional();
 
-        if (user == null) {
+        if (user.isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(Mapper.userEntityToDTO(user));
+        return Optional.of(Mapper.userEntityToDTO(user.get()));
     }
 }

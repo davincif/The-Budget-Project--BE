@@ -27,8 +27,19 @@ public class UserDTO implements Validatable {
 
     private LocalDate birthDay;
 
+    public UserDTO setEmail(String email) {
+        this.email = new EmailDTO().setEmail(email);
+
+        return this;
+    }
+
     @Override
     public boolean isValid() {
-        return this.email.isValid() && tihs.password.isValid();
+        return this.email.isValid() && this.password.isValid();
     }
+    // private boolean isNameValid(Optional<String> newName) {
+    //     int nameLength = newName.orElse(this.nickName).trim().length();
+
+    //     return nameLength >= 3 && nameLength <= 121;
+    // }
 }

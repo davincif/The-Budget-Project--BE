@@ -13,4 +13,10 @@ public class EmailDTO implements Validatable {
     public boolean isValid() {
         return !this.email.isBlank();
     }
+
+    public EmailDTO setEmail(String email) {
+        this.email = email.trim().toLowerCase();
+
+        return this;
+    }
 }
