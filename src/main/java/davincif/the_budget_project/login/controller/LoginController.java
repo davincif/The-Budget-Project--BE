@@ -16,33 +16,38 @@ limitations under the License
 
 package davincif.the_budget_project.login.controller;
 
+import davincif.the_budget_project.login.dto.UserDTO;
 import davincif.the_budget_project.login.response.BaseErrorResponse;
+import davincif.the_budget_project.login.service.UserService;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.Optional;
 
 @Path("/login")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class LoginController {
 
-  @POST
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response login() {
-    return Response.status(501)
-      .entity(BaseErrorResponse.notImplemented())
-      .build();
-  }
+    @Inject
+    private UserService userService;
 
-  @POST
-  @Path("/register")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response register() {
-    return Response.status(501)
-      .entity(BaseErrorResponse.notImplemented())
-      .build();
-  }
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login() {
+        return Response.status(501).entity(BaseErrorResponse.notImplemented()).build();
+    }
+
+    @POST
+    @Path("/register")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response register() {
+        Optional<UserDTO> user = userService.searchUser("test");
+
+        return Response.status(501).entity(BaseErrorResponse.notImplemented()).build();
+    }
 }

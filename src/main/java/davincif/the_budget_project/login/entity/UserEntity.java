@@ -16,6 +16,7 @@ limitations under the License
 
 package davincif.the_budget_project.login.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.smallrye.common.constraint.NotNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,44 +24,44 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.UUID;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 @Entity
-@Table(name = "users")
-public class UserEntity {
+@Table(name = "tb_users")
+@Data
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
+public class UserEntity extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Getter
     private UUID id;
 
     @NotBlank
-    @Getter
-    private String Email;
+    private String email;
 
     @NotBlank
-    @Getter
-    private String Password;
+    @Size(max = 255)
+    private String password;
 
-    @Getter
-    private String Name;
+    @Size(min = 3, max = 121) // The length of the name of Dom Pedro II from Brasil
+    private String name;
 
-    @Getter
-    private String NickName;
+    @Size(min = 3, max = 20)
+    private String nickName;
 
     @NotNull
-    @Getter
     private boolean isActive;
 
     @NotNull
-    @Getter
-    private LocalDate CreatedAt;
+    private LocalDate createdAt;
 
-    @Getter
-    private LocalDate UpdatedAt;
+    private LocalDate updatedAt;
 
-    @Getter
-    private LocalDate BirthDay;
+    private LocalDate birthDay;
 }

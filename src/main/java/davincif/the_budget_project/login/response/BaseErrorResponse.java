@@ -17,20 +17,19 @@ limitations under the License
 package davincif.the_budget_project.login.response;
 
 import java.util.Optional;
-import lombok.Getter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+@Data
+@Accessors(chain = true)
 public class BaseErrorResponse<T> {
 
-    @Getter
     private String code;
 
-    @Getter
     private Optional<String> friendlyMessage;
 
-    @Getter
     private Optional<String> technicalMessage;
 
-    @Getter
     private Optional<T> details;
 
     public static BaseErrorResponse<String> notImplemented() {
@@ -38,29 +37,5 @@ public class BaseErrorResponse<T> {
             .setCode("501")
             .setFriendlyMessage(Optional.of("This method ain't implemented yet"))
             .setTechnicalMessage(Optional.of("NOT IMPLEMENTED"));
-    }
-
-    public BaseErrorResponse<T> setCode(String code) {
-        this.code = code;
-
-        return this;
-    }
-
-    public BaseErrorResponse<T> setFriendlyMessage(Optional<String> friendlyMessage) {
-        this.friendlyMessage = friendlyMessage;
-
-        return this;
-    }
-
-    public BaseErrorResponse<T> setTechnicalMessage(Optional<String> technicalMessage) {
-        this.technicalMessage = technicalMessage;
-
-        return this;
-    }
-
-    public BaseErrorResponse<T> setDetails(Optional<T> details) {
-        this.details = details;
-
-        return this;
     }
 }
