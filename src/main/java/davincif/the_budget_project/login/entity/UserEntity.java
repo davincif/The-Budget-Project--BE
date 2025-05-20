@@ -16,6 +16,9 @@ limitations under the License
 
 package davincif.the_budget_project.login.entity;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.smallrye.common.constraint.NotNull;
 import jakarta.persistence.Entity;
@@ -25,8 +28,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -64,4 +65,11 @@ public class UserEntity extends PanacheEntityBase {
     private LocalDate updatedAt;
 
     private LocalDate birthDay;
+
+    public UserEntity userEntity() {
+        this.setCreatedAt(LocalDate.now());
+        this.setActive(true);
+
+        return this;
+    }
 }

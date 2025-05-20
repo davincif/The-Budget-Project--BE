@@ -1,13 +1,19 @@
 package davincif.the_budget_project.login.dto;
 
-import java.time.LocalDate;
 import java.util.UUID;
+
+import davincif.the_budget_project.login.dto.valueObject.BirthdayDate;
+import davincif.the_budget_project.login.dto.valueObject.EmailDTO;
+import davincif.the_budget_project.login.dto.valueObject.PasswordDTO;
+import davincif.the_budget_project.login.dto.valueObject.UpdateDate;
+import davincif.the_budget_project.login.dto.valueObject.UserName;
+import davincif.the_budget_project.login.dto.valueObject.UserNickName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class UserDTO implements Validatable {
+public class UserDTO {
 
     private UUID id;
 
@@ -15,31 +21,21 @@ public class UserDTO implements Validatable {
 
     private PasswordDTO password;
 
-    private String name;
+    private UserName name;
 
-    private String nickName;
+    private UserNickName nickName;
 
     private boolean isActive;
 
-    private LocalDate createdAt;
+    private UpdateDate createdAt;
 
-    private LocalDate updatedAt;
+    private UpdateDate updatedAt;
 
-    private LocalDate birthDay;
+    private BirthdayDate birthDay;
 
     public UserDTO setEmail(String email) {
-        this.email = new EmailDTO().setEmail(email);
+        this.email = new EmailDTO(email);
 
         return this;
     }
-
-    @Override
-    public boolean isValid() {
-        return this.email.isValid() && this.password.isValid();
-    }
-    // private boolean isNameValid(Optional<String> newName) {
-    //     int nameLength = newName.orElse(this.nickName).trim().length();
-
-    //     return nameLength >= 3 && nameLength <= 121;
-    // }
 }

@@ -32,13 +32,6 @@ public class BaseErrorResponse<T> {
 
     private Optional<T> details;
 
-    public static BaseErrorResponse<String> notImplemented() {
-        return new BaseErrorResponse<String>()
-            .setCode("501")
-            .setFriendlyMessage("This method ain't implemented yet")
-            .setTechnicalMessage("NOT IMPLEMENTED");
-    }
-
     public BaseErrorResponse<T> setFriendlyMessage(String friendlyMessage) {
         this.friendlyMessage = Optional.of(friendlyMessage);
         return this;

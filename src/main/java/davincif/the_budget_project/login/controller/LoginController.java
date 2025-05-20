@@ -16,9 +16,12 @@ limitations under the License
 
 package davincif.the_budget_project.login.controller;
 
+import java.util.Optional;
+
 import davincif.the_budget_project.login.dto.UserDTO;
 import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.response.BaseErrorResponse;
+import davincif.the_budget_project.login.response.NotImplementedErrorResponse;
 import davincif.the_budget_project.login.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -28,7 +31,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.util.Optional;
 
 @Path("/login")
 @Produces(MediaType.APPLICATION_JSON)
@@ -41,23 +43,49 @@ public class LoginController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response login() {
-        return Response.status(501).entity(BaseErrorResponse.notImplemented()).build();
+        return this.notImplementedReponse();
     }
 
     @POST
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
     public Response register(@Valid LoginRequest loginRequest) {
-        Optional<UserDTO> user = userService.searchUser("test");
+        Optional<UserDTO> user;
 
-        if (user.isPresent()) {
-            BaseErrorResponse<Void> existentUserResponse = new BaseErrorResponse<Void>()
-                .setCode("409")
-                .setFriendlyMessage("This user already exists, try logging in");
-
-            return Response.status(409).entity(existentUserResponse).build();
+        try {
+            user = userService.searchUser(loginRequest.getEmail());
+        } catch (IllegalArgumentException e) {
+            // TODO: ENHANCE ERROR HANDLER
+            return this.illegalArgumentResponse(e.getMessage());
         }
 
-        return Response.status(501).entity(BaseErrorResponse.notImplemented()).build();
+        if (user.isPresent()) {
+            return this.inexistentUserResponse();
+        }
+
+        return this.notImplementedReponse();
+    }
+
+    private Response inexistentUserResponse() {
+        BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
+            .setCode("409")
+            .setFriendlyMessage("This user already exists, try logging in");
+
+        return Response.status(409).entity(response).build();
+    }
+
+    private Response illegalArgumentResponse(String message) {
+        BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
+            .setCode("400")
+            .setFriendlyMessage(message);
+
+        return Response.status(409).entity(response).build();
+    }
+
+    private Response notImplementedReponse() {
+        NotImplementedErrorResponse response =
+            new NotImplementedErrorResponse();
+
+        return Response.status(501).entity(response).build();
     }
 }
