@@ -14,16 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License
 */
 
-package davincif.the_budget_project.login.dto.valueObject;
+package davincif.the_budget_project.login.response;
 
-import java.time.LocalDate;
+public class InternalErrorResponse extends BaseErrorResponse<Void> {
 
-public record UpdateDate(LocalDate value) {
-    public UpdateDate(LocalDate value) {
-        this.value = this.guaranteedValidDate(value);
-    }
-
-    private LocalDate guaranteedValidDate(LocalDate birthdayDate) {
-        return birthdayDate;
+    public InternalErrorResponse(String message) {
+        this.setCode("500")
+            .setFriendlyMessage(
+                "A unexpected error occurred at the Backend, sorry."
+            )
+            .setTechnicalMessage(message);
     }
 }
