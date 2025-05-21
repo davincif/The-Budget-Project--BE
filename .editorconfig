@@ -16,7 +16,7 @@ indent_size = 4
 [*.java]
 indent_style = space
 indent_size = 4
-max_line_length = 100
+max_line_length = 80
 insert_final_newline = true
 trim_trailing_whitespace = true
 
@@ -26,7 +26,7 @@ indent_style = space
 indent_size = 2
 
 # YAML files (application.yml etc.)
-[*.yml]
+[*.{yaml,yml}]
 indent_style = space
 indent_size = 2
 

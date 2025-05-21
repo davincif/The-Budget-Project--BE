@@ -17,49 +17,34 @@ limitations under the License
 package davincif.the_budget_project.login.response;
 
 import java.util.Optional;
-import lombok.Getter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+@Data
+@Accessors(chain = true)
 public class BaseErrorResponse<T> {
 
-    @Getter
     private String code;
 
-    @Getter
     private Optional<String> friendlyMessage;
 
-    @Getter
     private Optional<String> technicalMessage;
 
-    @Getter
     private Optional<T> details;
 
-    public static BaseErrorResponse<String> notImplemented() {
-        return new BaseErrorResponse<String>()
-            .setCode("501")
-            .setFriendlyMessage(Optional.of("This method ain't implemented yet"))
-            .setTechnicalMessage(Optional.of("NOT IMPLEMENTED"));
+    public BaseErrorResponse<T> setFriendlyMessage(String friendlyMessage) {
+        this.friendlyMessage = Optional.of(friendlyMessage);
+        return this;
     }
 
-    public BaseErrorResponse<T> setCode(String code) {
-        this.code = code;
+    public BaseErrorResponse<T> setTechnicalMessage(String technicalMessage) {
+        this.technicalMessage = Optional.of(technicalMessage);
 
         return this;
     }
 
-    public BaseErrorResponse<T> setFriendlyMessage(Optional<String> friendlyMessage) {
-        this.friendlyMessage = friendlyMessage;
-
-        return this;
-    }
-
-    public BaseErrorResponse<T> setTechnicalMessage(Optional<String> technicalMessage) {
-        this.technicalMessage = technicalMessage;
-
-        return this;
-    }
-
-    public BaseErrorResponse<T> setDetails(Optional<T> details) {
-        this.details = details;
+    public BaseErrorResponse<T> setDetails(T details) {
+        this.details = Optional.of(details);
 
         return this;
     }
