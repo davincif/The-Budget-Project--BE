@@ -16,14 +16,14 @@ limitations under the License
 
 package davincif.the_budget_project.login.dto.valueObject;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public record UpdateDate(LocalDate value) {
-    public UpdateDate(LocalDate value) {
+public record UpdateDate(LocalDateTime value) {
+    public UpdateDate(LocalDateTime value) {
         this.value = this.guaranteedValidDate(value);
     }
 
-    private LocalDate guaranteedValidDate(LocalDate birthdayDate) {
+    private LocalDateTime guaranteedValidDate(LocalDateTime birthdayDate) {
         return birthdayDate;
     }
 }

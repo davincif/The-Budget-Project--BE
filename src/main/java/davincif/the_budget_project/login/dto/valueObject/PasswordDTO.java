@@ -16,15 +16,39 @@ limitations under the License
 
 package davincif.the_budget_project.login.dto.valueObject;
 
+import io.quarkus.elytron.security.common.BcryptUtil;
+
 public record PasswordDTO(String value) {
+    public static final int MIN_LENGTH = 6;
+    public static final int MAX_LENGTH = 60;
+    public static final int INTERATION_COUNT = 12;
+
     public PasswordDTO(String value) {
-        this.value = this.guaranteedValid(value);
+        this.value = this.encrypt(this.guaranteedValid(value));
+    }
+
+    public String encrypt(String password) {
+        return BcryptUtil.bcryptHash(password, PasswordDTO.INTERATION_COUNT);
     }
 
     private String guaranteedValid(String password) {
         if (password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException(
                 "password can't be null nor empty"
+            );
+        }
+
+        String trimmedPassword = password.trim();
+        if (
+            trimmedPassword.length() < PasswordDTO.MIN_LENGTH ||
+            trimmedPassword.length() > PasswordDTO.MAX_LENGTH
+        ) {
+            throw new IllegalArgumentException(
+                "password must be between " +
+                PasswordDTO.MIN_LENGTH +
+                " and " +
+                PasswordDTO.MAX_LENGTH +
+                " characters"
             );
         }
 

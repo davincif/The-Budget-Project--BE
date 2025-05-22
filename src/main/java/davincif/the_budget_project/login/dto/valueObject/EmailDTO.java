@@ -35,7 +35,7 @@ public record EmailDTO(String value) {
 
         String trimmedLowerCaseEmail = email.trim().toLowerCase();
 
-        if (!REGEX.matcher(trimmedLowerCaseEmail).matches()) {
+        if (!EmailDTO.REGEX.matcher(trimmedLowerCaseEmail).matches()) {
             throw new IllegalArgumentException(
                 "E-mail is not valid: " + trimmedLowerCaseEmail
             );

@@ -17,7 +17,7 @@ limitations under the License
 package davincif.the_budget_project.login.dto;
 
 import davincif.the_budget_project.login.entity.UserEntity;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Mapper {
 
@@ -30,8 +30,8 @@ public class Mapper {
 
     public static UserEntity userDTOToEntity(UserDTO userDTO)
         throws IllegalArgumentException {
-        LocalDate createdAt = userDTO.getCreatedAt() == null
-            ? LocalDate.now()
+        LocalDateTime createdAt = userDTO.getCreatedAt() == null
+            ? LocalDateTime.now()
             : userDTO.getCreatedAt().value();
 
         UserEntity user = new UserEntity()

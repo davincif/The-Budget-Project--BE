@@ -24,18 +24,18 @@ public record UserNickName(String value) {
         this.value = this.guaranteedValid(value);
     }
 
-    private String guaranteedValid(String userName) {
+    private String guaranteedValid(String userNickName) {
         // TODO: MAKE A BETTER ERROR TREATMENT
-        if (userName == null || userName.trim().isEmpty()) {
+        if (userNickName == null || userNickName.trim().isEmpty()) {
             throw new IllegalArgumentException(
                 "user nick name can't be null nor empty"
             );
         }
 
-        String trimmedUserName = userName.trim();
+        String trimmedUserNickName = userNickName.trim();
         if (
-            trimmedUserName.length() < UserName.MIN_LENGTH ||
-            trimmedUserName.length() > UserName.MAX_LENGTH
+            trimmedUserNickName.length() < UserName.MIN_LENGTH ||
+            trimmedUserNickName.length() > UserName.MAX_LENGTH
         ) {
             throw new IllegalArgumentException(
                 "user nick name must be between " +
@@ -46,6 +46,6 @@ public record UserNickName(String value) {
             );
         }
 
-        return userName;
+        return userNickName;
     }
 }
