@@ -23,7 +23,6 @@ import davincif.the_budget_project.login.response.InternalErrorResponse;
 import davincif.the_budget_project.login.response.NotImplementedErrorResponse;
 import davincif.the_budget_project.login.service.UserService;
 import jakarta.inject.Inject;
-import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -42,14 +41,24 @@ public class LoginController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login() {
+    public Response login(LoginRequest loginRequest) {
+        Optional<UserDTO> existentUser;
+
+        try {
+            existentUser = this.userService.searchUser(loginRequest.getEmail());
+        } catch (IllegalArgumentException e) {
+            // TODO: ENHANCE ERROR HANDLER
+            return this.illegalArgumentResponse(e.getMessage());
+        }
+        System.out.println(existentUser);
+
         return this.notImplementedReponse();
     }
 
     @POST
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register(@Valid LoginRequest loginRequest) {
+    public Response register(LoginRequest loginRequest) {
         Optional<UserDTO> existentUser;
 
         try {

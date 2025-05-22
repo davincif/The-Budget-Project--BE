@@ -17,8 +17,8 @@ limitations under the License
 package davincif.the_budget_project.login.dto;
 
 import davincif.the_budget_project.login.dto.valueObject.BirthdayDate;
-import davincif.the_budget_project.login.dto.valueObject.EmailDTO;
-import davincif.the_budget_project.login.dto.valueObject.PasswordDTO;
+import davincif.the_budget_project.login.dto.valueObject.Email;
+import davincif.the_budget_project.login.dto.valueObject.Password;
 import davincif.the_budget_project.login.dto.valueObject.UpdateDate;
 import davincif.the_budget_project.login.dto.valueObject.UserName;
 import davincif.the_budget_project.login.dto.valueObject.UserNickName;
@@ -32,9 +32,9 @@ public class UserDTO {
 
     private UUID id;
 
-    private EmailDTO email;
+    private Email email;
 
-    private PasswordDTO password;
+    private Password password;
 
     private UserName name;
 
@@ -50,7 +50,7 @@ public class UserDTO {
 
     public static UserDTO of(String email, String password) {
         return new UserDTO()
-            .setEmail(new EmailDTO(email))
-            .setPassword(new PasswordDTO(password));
+            .setEmail(new Email(email))
+            .setPassword(new Password(password));
     }
 }
