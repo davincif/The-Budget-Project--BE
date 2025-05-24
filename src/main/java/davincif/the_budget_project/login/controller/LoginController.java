@@ -17,6 +17,7 @@ limitations under the License
 package davincif.the_budget_project.login.controller;
 
 import davincif.the_budget_project.login.dto.UserDTO;
+import davincif.the_budget_project.login.dto.valueObject.Token;
 import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.response.BaseErrorResponse;
 import davincif.the_budget_project.login.response.InternalErrorResponse;
@@ -50,9 +51,14 @@ public class LoginController {
             // TODO: ENHANCE ERROR HANDLER
             return this.illegalArgumentResponse(e.getMessage());
         }
-        System.out.println(existentUser);
 
-        return this.notImplementedReponse();
+        if (existentUser.isEmpty()) {
+            return this.userNotFoundResponse();
+        }
+
+        Token token = this.userService.generateLoginToken(existentUser.get());
+
+        return Response.ok().build();
     }
 
     @POST
@@ -69,7 +75,7 @@ public class LoginController {
         }
 
         if (existentUser.isPresent()) {
-            return this.inexistentUserResponse();
+            return this.alreadyExistentUserResponse();
         }
 
         try {
@@ -84,7 +90,15 @@ public class LoginController {
         return Response.status(201).build();
     }
 
-    private Response inexistentUserResponse() {
+    private Response userNotFoundResponse() {
+        BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
+            .setCode("404")
+            .setFriendlyMessage("This user don't exist. Try registering");
+
+        return Response.status(404).entity(response).build();
+    }
+
+    private Response alreadyExistentUserResponse() {
         BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
             .setCode("409")
             .setFriendlyMessage("This user already exists. Try logging in");

@@ -27,6 +27,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -71,5 +72,9 @@ public class UserEntity extends PanacheEntityBase {
         this.setActive(true);
 
         return this;
+    }
+
+    public static Optional<UserEntity> findByEmail(String email) {
+        return UserEntity.find("email=?1", email).firstResultOptional();
     }
 }
