@@ -21,6 +21,7 @@ import davincif.the_budget_project.login.dto.UserDTO;
 import davincif.the_budget_project.login.dto.valueObject.Email;
 import davincif.the_budget_project.login.dto.valueObject.Token;
 import davincif.the_budget_project.login.entity.UserEntity;
+import davincif.the_budget_project.login.exception.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
@@ -44,18 +45,44 @@ public class UserService {
     }
 
     @Transactional
-    public void craeteUser(String email, String password)
+    public void createUser(String email, String password)
         throws IllegalArgumentException {
         UserDTO userDTO = UserDTO.of(email, password).setActive(true);
+
+        this.guaranteeNonExistingUser(email);
 
         UserEntity userEntity = Mapper.userDTOToEntity(userDTO);
 
         userEntity.persist();
     }
 
+    public UserDTO getUserExists(String email) {
+        Optional<UserDTO> existentUser = this.searchUser(email);
+
+        if (existentUser.isEmpty()) {
+            throw new UserNotFoundException(
+                "This user doesn't exist. Try registering"
+            );
+        }
+
+        return existentUser.get();
+    }
+
     public Token generateLoginToken(UserDTO userDTO) {
         Token token = new Token();
 
         return token;
+    }
+
+    private void guaranteeNonExistingUser(String email) {
+        Email Email = new Email(email);
+
+        Optional<UserEntity> user = UserEntity.findByEmail(Email.value());
+
+        if (user.isPresent()) {
+            throw new IllegalArgumentException(
+                "This user already exists. Try logging in"
+            );
+        }
     }
 }
