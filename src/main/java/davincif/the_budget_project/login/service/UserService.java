@@ -16,18 +16,22 @@ limitations under the License
 
 package davincif.the_budget_project.login.service;
 
-import davincif.the_budget_project.login.dto.Mapper;
 import davincif.the_budget_project.login.dto.TokenDTO;
 import davincif.the_budget_project.login.dto.UserDTO;
+import davincif.the_budget_project.login.dto.UserMapper;
 import davincif.the_budget_project.login.dto.valueObject.Email;
 import davincif.the_budget_project.login.entity.UserEntity;
 import davincif.the_budget_project.login.exception.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 @ApplicationScoped
 public class UserService {
+
+    @Inject
+    private UserMapper userMapper;
 
     public Optional<UserDTO> searchUser(String email)
         throws IllegalArgumentException {
@@ -39,7 +43,7 @@ public class UserService {
             return Optional.empty();
         }
 
-        UserDTO userDTO = Mapper.userEntityToDTO(user.get());
+        UserDTO userDTO = userMapper.userEntityToDTO(user.get());
 
         return Optional.of(userDTO);
     }
@@ -51,12 +55,12 @@ public class UserService {
 
         this.guaranteeNonExistingUser(email);
 
-        UserEntity userEntity = Mapper.userDTOToEntity(userDTO);
+        UserEntity userEntity = userMapper.userDTOToEntity(userDTO);
 
         userEntity.persist();
     }
 
-    public UserDTO getUserExists(String email) {
+    public UserDTO getUser(String email) {
         Optional<UserDTO> existentUser = this.searchUser(email);
 
         if (existentUser.isEmpty()) {
@@ -68,8 +72,8 @@ public class UserService {
         return existentUser.get();
     }
 
-    public TokenDTO generateLoginToken(UserDTO userDTO) {
-        TokenDTO token = new TokenDTO().setSub("id_test");
+    public TokenDTO generateUserToken(UserDTO userDTO) {
+        TokenDTO token = new TokenDTO(userDTO);
 
         return token;
     }

@@ -26,6 +26,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception exception) {
+        exception.printStackTrace(System.out);
         BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
             .setCode("500")
             .setFriendlyMessage("An unexpected error occurred.")

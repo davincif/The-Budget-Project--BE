@@ -8,5 +8,6 @@
     "bracketSpacing": true,
     "javaBracketSameLine": false,
     "javaSpacesInsideParentheses": false,
-    "javaSortImports": true
+    "javaSortImports": true,
+    "singleAttributePerLine": true
   }

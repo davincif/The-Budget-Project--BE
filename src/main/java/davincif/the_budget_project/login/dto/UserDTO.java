@@ -22,6 +22,7 @@ import davincif.the_budget_project.login.dto.valueObject.Password;
 import davincif.the_budget_project.login.dto.valueObject.UpdateDate;
 import davincif.the_budget_project.login.dto.valueObject.UserName;
 import davincif.the_budget_project.login.dto.valueObject.UserNickName;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -40,9 +41,9 @@ public class UserDTO {
 
     private UserNickName nickName;
 
-    private boolean isActive;
+    private boolean isActive = false;
 
-    private UpdateDate createdAt;
+    private UpdateDate createdAt = new UpdateDate(LocalDateTime.now());
 
     private UpdateDate updatedAt;
 

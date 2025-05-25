@@ -40,11 +40,11 @@ public class LoginController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest loginRequest) {
         UserDTO existentUser =
-            this.userService.getUserExists(loginRequest.getEmail());
+            this.userService.getUser(loginRequest.getEmail());
 
-        TokenDTO token = this.userService.generateLoginToken(existentUser);
+        TokenDTO token = this.userService.generateUserToken(existentUser);
 
-        return Response.ok(token).build();
+        return Response.ok(token.getJwt()).build();
     }
 
     @POST
