@@ -22,15 +22,16 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class UserAlreadyExistsExceptionMapper
-    implements ExceptionMapper<UserAlreadyExistsException> {
+public class NotImplementedExceptionMapper
+    implements ExceptionMapper<NotImplementedException> {
 
     @Override
-    public Response toResponse(UserAlreadyExistsException exception) {
+    public Response toResponse(NotImplementedException exception) {
         BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
-            .setCode("409")
-            .setFriendlyMessage(exception.getMessage());
+            .setCode("501")
+            .setFriendlyMessage(exception.getMessage())
+            .setFriendlyMessage("NOT IMPLEMENTED");
 
-        return Response.status(409).entity(response).build();
+        return Response.status(501).entity(response).build();
     }
 }

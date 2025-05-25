@@ -14,15 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License
 */
 
-package davincif.the_budget_project.login.response;
+package davincif.the_budget_project.login.exception;
 
-public class InternalErrorResponse extends BaseErrorResponse<Void> {
+public class NotImplementedException extends RuntimeException {
 
-    public InternalErrorResponse(String message) {
-        this.setCode("500")
-            .setFriendlyMessage(
-                "A unexpected error occurred at the Backend, sorry."
-            )
-            .setTechnicalMessage(message);
+    public NotImplementedException(String message) {
+        super(message);
     }
 }

@@ -16,8 +16,8 @@ limitations under the License
 
 package davincif.the_budget_project.login.controller;
 
+import davincif.the_budget_project.login.dto.TokenDTO;
 import davincif.the_budget_project.login.dto.UserDTO;
-import davincif.the_budget_project.login.dto.valueObject.Token;
 import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.service.UserService;
 import jakarta.inject.Inject;
@@ -42,7 +42,7 @@ public class LoginController {
         UserDTO existentUser =
             this.userService.getUserExists(loginRequest.getEmail());
 
-        Token token = this.userService.generateLoginToken(existentUser);
+        TokenDTO token = this.userService.generateLoginToken(existentUser);
 
         return Response.ok(token).build();
     }

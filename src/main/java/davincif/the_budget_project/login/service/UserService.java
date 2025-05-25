@@ -17,9 +17,9 @@ limitations under the License
 package davincif.the_budget_project.login.service;
 
 import davincif.the_budget_project.login.dto.Mapper;
+import davincif.the_budget_project.login.dto.TokenDTO;
 import davincif.the_budget_project.login.dto.UserDTO;
 import davincif.the_budget_project.login.dto.valueObject.Email;
-import davincif.the_budget_project.login.dto.valueObject.Token;
 import davincif.the_budget_project.login.entity.UserEntity;
 import davincif.the_budget_project.login.exception.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -68,8 +68,8 @@ public class UserService {
         return existentUser.get();
     }
 
-    public Token generateLoginToken(UserDTO userDTO) {
-        Token token = new Token();
+    public TokenDTO generateLoginToken(UserDTO userDTO) {
+        TokenDTO token = new TokenDTO().setSub("id_test");
 
         return token;
     }
