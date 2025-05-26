@@ -18,10 +18,12 @@ package davincif.the_budget_project.login.service;
 
 import davincif.the_budget_project.login.dto.TokenDTO;
 import davincif.the_budget_project.login.dto.UserDTO;
-import davincif.the_budget_project.login.dto.UserMapper;
 import davincif.the_budget_project.login.dto.valueObject.Email;
 import davincif.the_budget_project.login.entity.UserEntity;
 import davincif.the_budget_project.login.exception.UserNotFoundException;
+import davincif.the_budget_project.login.mapper.LoginMapper;
+import davincif.the_budget_project.login.mapper.UserMapper;
+import davincif.the_budget_project.login.response.LoginResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -32,6 +34,9 @@ public class UserService {
 
     @Inject
     private UserMapper userMapper;
+
+    @Inject
+    private LoginMapper loginMapper;
 
     public Optional<UserDTO> searchUser(String email)
         throws IllegalArgumentException {
@@ -72,10 +77,13 @@ public class UserService {
         return existentUser.get();
     }
 
-    public TokenDTO generateUserToken(UserDTO userDTO) {
+    public LoginResponse generateUserToken(UserDTO userDTO) {
         TokenDTO token = new TokenDTO(userDTO);
 
-        return token;
+        LoginResponse userDTOToLoginResponse =
+            loginMapper.userDTOToLoginResponse(userDTO, token.getJwt());
+
+        return userDTOToLoginResponse;
     }
 
     private void guaranteeNonExistingUser(String email) {
