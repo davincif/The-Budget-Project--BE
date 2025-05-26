@@ -16,46 +16,85 @@ limitations under the License
 
 package davincif.the_budget_project.login.service;
 
-import davincif.the_budget_project.login.dto.Mapper;
+import davincif.the_budget_project.login.dto.TokenDTO;
 import davincif.the_budget_project.login.dto.UserDTO;
-import davincif.the_budget_project.login.dto.valueObject.EmailDTO;
+import davincif.the_budget_project.login.dto.valueObject.Email;
 import davincif.the_budget_project.login.entity.UserEntity;
+import davincif.the_budget_project.login.exception.UserNotFoundException;
+import davincif.the_budget_project.login.mapper.LoginMapper;
+import davincif.the_budget_project.login.mapper.UserMapper;
+import davincif.the_budget_project.login.response.LoginResponse;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 @ApplicationScoped
 public class UserService {
 
+    @Inject
+    private UserMapper userMapper;
+
+    @Inject
+    private LoginMapper loginMapper;
+
     public Optional<UserDTO> searchUser(String email)
         throws IllegalArgumentException {
-        EmailDTO emailDTO = new EmailDTO(email);
+        Email Email = new Email(email);
 
-        if (emailDTO.value() == null) {
-            throw new IllegalArgumentException("Email is not valid");
-        }
-
-        Optional<UserEntity> user = UserEntity.find(
-            "email=?1",
-            emailDTO.value()
-        ).firstResultOptional();
+        Optional<UserEntity> user = UserEntity.findByEmail(Email.value());
 
         if (user.isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(Mapper.userEntityToDTO(user.get()));
+        UserDTO userDTO = userMapper.userEntityToDTO(user.get());
+
+        return Optional.of(userDTO);
     }
 
     @Transactional
-    public void craeteUser(String email, String password)
+    public void createUser(String email, String password)
         throws IllegalArgumentException {
         UserDTO userDTO = UserDTO.of(email, password).setActive(true);
-        System.out.println(userDTO);
 
-        UserEntity userEntity = Mapper.userDTOToEntity(userDTO);
-        System.out.println(userEntity);
+        this.guaranteeNonExistingUser(email);
+
+        UserEntity userEntity = userMapper.userDTOToEntity(userDTO);
 
         userEntity.persist();
+    }
+
+    public UserDTO getUser(String email) {
+        Optional<UserDTO> existentUser = this.searchUser(email);
+
+        if (existentUser.isEmpty()) {
+            throw new UserNotFoundException(
+                "This user doesn't exist. Try registering"
+            );
+        }
+
+        return existentUser.get();
+    }
+
+    public LoginResponse generateUserToken(UserDTO userDTO) {
+        TokenDTO token = new TokenDTO(userDTO);
+
+        LoginResponse userDTOToLoginResponse =
+            loginMapper.userDTOToLoginResponse(userDTO, token.getJwt());
+
+        return userDTOToLoginResponse;
+    }
+
+    private void guaranteeNonExistingUser(String email) {
+        Email Email = new Email(email);
+
+        Optional<UserEntity> user = UserEntity.findByEmail(Email.value());
+
+        if (user.isPresent()) {
+            throw new IllegalArgumentException(
+                "This user already exists. Try logging in"
+            );
+        }
     }
 }

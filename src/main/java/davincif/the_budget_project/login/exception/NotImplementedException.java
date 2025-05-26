@@ -14,13 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License
 */
 
-package davincif.the_budget_project.login.response;
+package davincif.the_budget_project.login.exception;
 
-public class NotImplementedErrorResponse extends BaseErrorResponse<Void> {
+public class NotImplementedException extends RuntimeException {
 
-    public NotImplementedErrorResponse() {
-        this.setCode("501")
-            .setFriendlyMessage("This method ain't implemented yet")
-            .setTechnicalMessage("NOT IMPLEMENTED");
+    public NotImplementedException(String message) {
+        super(message);
     }
 }

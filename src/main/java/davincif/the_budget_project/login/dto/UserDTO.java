@@ -17,11 +17,12 @@ limitations under the License
 package davincif.the_budget_project.login.dto;
 
 import davincif.the_budget_project.login.dto.valueObject.BirthdayDate;
-import davincif.the_budget_project.login.dto.valueObject.EmailDTO;
-import davincif.the_budget_project.login.dto.valueObject.PasswordDTO;
+import davincif.the_budget_project.login.dto.valueObject.Email;
+import davincif.the_budget_project.login.dto.valueObject.Password;
 import davincif.the_budget_project.login.dto.valueObject.UpdateDate;
 import davincif.the_budget_project.login.dto.valueObject.UserName;
 import davincif.the_budget_project.login.dto.valueObject.UserNickName;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -32,17 +33,17 @@ public class UserDTO {
 
     private UUID id;
 
-    private EmailDTO email;
+    private Email email;
 
-    private PasswordDTO password;
+    private Password password;
 
     private UserName name;
 
     private UserNickName nickName;
 
-    private boolean isActive;
+    private boolean isActive = false;
 
-    private UpdateDate createdAt;
+    private UpdateDate createdAt = new UpdateDate(LocalDateTime.now());
 
     private UpdateDate updatedAt;
 
@@ -50,7 +51,7 @@ public class UserDTO {
 
     public static UserDTO of(String email, String password) {
         return new UserDTO()
-            .setEmail(new EmailDTO(email))
-            .setPassword(new PasswordDTO(password));
+            .setEmail(new Email(email))
+            .setPassword(new Password(password));
     }
 }

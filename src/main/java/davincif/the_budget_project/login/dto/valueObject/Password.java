@@ -18,20 +18,21 @@ package davincif.the_budget_project.login.dto.valueObject;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 
-public record PasswordDTO(String value) {
+public record Password(String value) {
     public static final int MIN_LENGTH = 6;
     public static final int MAX_LENGTH = 60;
-    public static final int INTERATION_COUNT = 12;
+    public static final int ITERATION_COUNT = 12;
 
-    public PasswordDTO(String value) {
+    public Password(String value) {
         this.value = this.encrypt(this.guaranteedValid(value));
     }
 
     public String encrypt(String password) {
-        return BcryptUtil.bcryptHash(password, PasswordDTO.INTERATION_COUNT);
+        return BcryptUtil.bcryptHash(password, Password.ITERATION_COUNT);
     }
 
-    private String guaranteedValid(String password) {
+    private String guaranteedValid(String password)
+        throws IllegalArgumentException {
         if (password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException(
                 "password can't be null nor empty"
@@ -40,14 +41,14 @@ public record PasswordDTO(String value) {
 
         String trimmedPassword = password.trim();
         if (
-            trimmedPassword.length() < PasswordDTO.MIN_LENGTH ||
-            trimmedPassword.length() > PasswordDTO.MAX_LENGTH
+            trimmedPassword.length() < Password.MIN_LENGTH ||
+            trimmedPassword.length() > Password.MAX_LENGTH
         ) {
             throw new IllegalArgumentException(
                 "password must be between " +
-                PasswordDTO.MIN_LENGTH +
+                Password.MIN_LENGTH +
                 " and " +
-                PasswordDTO.MAX_LENGTH +
+                Password.MAX_LENGTH +
                 " characters"
             );
         }

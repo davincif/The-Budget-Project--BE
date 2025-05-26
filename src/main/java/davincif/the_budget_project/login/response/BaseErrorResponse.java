@@ -16,12 +16,14 @@ limitations under the License
 
 package davincif.the_budget_project.login.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Optional;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class BaseErrorResponse<T> {
 
     private String code;

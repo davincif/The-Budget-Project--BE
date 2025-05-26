@@ -18,12 +18,12 @@ package davincif.the_budget_project.login.dto.valueObject;
 
 import java.util.regex.Pattern;
 
-public record EmailDTO(String value) {
+public record Email(String value) {
     private static final Pattern REGEX = Pattern.compile(
         "^[^@]+@[^@]+\\.[^@]+$"
     );
 
-    public EmailDTO(String value) {
+    public Email(String value) {
         this.value = this.guaranteedValid(value);
     }
 
@@ -35,7 +35,7 @@ public record EmailDTO(String value) {
 
         String trimmedLowerCaseEmail = email.trim().toLowerCase();
 
-        if (!EmailDTO.REGEX.matcher(trimmedLowerCaseEmail).matches()) {
+        if (!Email.REGEX.matcher(trimmedLowerCaseEmail).matches()) {
             throw new IllegalArgumentException(
                 "E-mail is not valid: " + trimmedLowerCaseEmail
             );

@@ -16,13 +16,33 @@ limitations under the License
 
 package davincif.the_budget_project.login.response;
 
-public class InternalErrorResponse extends BaseErrorResponse<Void> {
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-    public InternalErrorResponse(String message) {
-        this.setCode("500")
-            .setFriendlyMessage(
-                "A unexpected error occurred at the Backend, sorry."
-            )
-            .setTechnicalMessage(message);
-    }
+@Data
+@Accessors(chain = true)
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+public class LoginResponse {
+
+    private String token;
+
+    private UUID id;
+
+    private String email;
+
+    private String name;
+
+    private String nickName;
+
+    private boolean isActive;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    private LocalDate birthDay;
 }
