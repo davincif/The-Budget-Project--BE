@@ -22,16 +22,19 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class NotImplementedExceptionMapper
-    implements ExceptionMapper<NotImplementedException> {
+public class ForbiddenExceptionMapper
+    implements ExceptionMapper<ForbiddenException> {
 
     @Override
-    public Response toResponse(NotImplementedException exception) {
+    public Response toResponse(ForbiddenException exception) {
         BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
-            .setCode("501")
-            .setFriendlyMessage("NOT IMPLEMENTED")
-            .setTechnicalMessage(exception.getMessage());
+            .setCode("403")
+            .setFriendlyMessage("You are not allowed to access this resource");
 
-        return Response.status(501).entity(response).build();
+        if (exception.getMessage() != null) {
+            response.setTechnicalMessage(exception.getMessage());
+        }
+
+        return Response.status(403).entity(response).build();
     }
 }

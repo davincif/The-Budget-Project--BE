@@ -19,12 +19,14 @@ package davincif.the_budget_project.login.service;
 import davincif.the_budget_project.login.dto.TokenDTO;
 import davincif.the_budget_project.login.dto.UserDTO;
 import davincif.the_budget_project.login.dto.valueObject.Email;
+import davincif.the_budget_project.login.dto.valueObject.Password;
 import davincif.the_budget_project.login.entity.UserEntity;
+import davincif.the_budget_project.login.exception.ForbiddenException;
 import davincif.the_budget_project.login.exception.InvalidArgumentException;
 import davincif.the_budget_project.login.exception.UserAlreadyExistsException;
-import davincif.the_budget_project.login.exception.UserNotFoundException;
 import davincif.the_budget_project.login.mapper.LoginMapper;
 import davincif.the_budget_project.login.mapper.UserMapper;
+import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.response.LoginResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -40,21 +42,6 @@ public class UserService {
     @Inject
     private LoginMapper loginMapper;
 
-    public Optional<UserDTO> searchUser(String email)
-        throws InvalidArgumentException {
-        Email Email = new Email(email);
-
-        Optional<UserEntity> user = UserEntity.findByEmail(Email.value());
-
-        if (user.isEmpty()) {
-            return Optional.empty();
-        }
-
-        UserDTO userDTO = userMapper.userEntityToDTO(user.get());
-
-        return Optional.of(userDTO);
-    }
-
     @Transactional
     public void createUser(String email, String password)
         throws InvalidArgumentException {
@@ -67,19 +54,29 @@ public class UserService {
         userEntity.persist();
     }
 
-    public UserDTO getUser(String email) {
-        Optional<UserDTO> existentUser = this.searchUser(email);
+    public LoginResponse loginUser(LoginRequest loginRequest) {
+        Optional<UserEntity> user = validateEmailAndFindUser(
+            loginRequest.getEmail()
+        );
 
-        if (existentUser.isEmpty()) {
-            throw new UserNotFoundException(
-                "This user doesn't exist. Try registering"
-            );
+        if (
+            user.isEmpty() ||
+            !this.doesPasswordMatches(
+                    loginRequest.getPassword(),
+                    user.get().getPassword()
+                )
+        ) {
+            System.out.println("não é igual!!");
+            throw new ForbiddenException();
         }
 
-        return existentUser.get();
+        UserDTO userDTO = userMapper.userEntityToDTO(user.get());
+        LoginResponse loginResponse = this.generateUserToken(userDTO);
+
+        return loginResponse;
     }
 
-    public LoginResponse generateUserToken(UserDTO userDTO) {
+    private LoginResponse generateUserToken(UserDTO userDTO) {
         TokenDTO token = new TokenDTO(userDTO);
 
         LoginResponse userDTOToLoginResponse =
@@ -99,5 +96,32 @@ public class UserService {
                 "This user already exists. Try logging in"
             );
         }
+    }
+
+    private boolean doesPasswordMatches(
+        String passwordToBeChecked,
+        String encryptedPassword
+    ) {
+        Password encryptedPasswordToBeChecked = new Password(
+            passwordToBeChecked
+        );
+
+        System.out.println(passwordToBeChecked + '\n');
+        System.out.println(encryptedPassword + '\n');
+        System.out.println(encryptedPasswordToBeChecked.value() + '\n');
+        System.out.println(
+            "== " +
+            encryptedPassword.equals(encryptedPasswordToBeChecked.value())
+        );
+
+        return encryptedPassword.equals(encryptedPasswordToBeChecked.value());
+    }
+
+    private Optional<UserEntity> validateEmailAndFindUser(String email) {
+        Email EmailObj = new Email(email);
+
+        Optional<UserEntity> user = UserEntity.findByEmail(EmailObj.value());
+
+        return user;
     }
 }

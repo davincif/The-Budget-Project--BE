@@ -16,22 +16,13 @@ limitations under the License
 
 package davincif.the_budget_project.login.exception;
 
-import davincif.the_budget_project.login.response.BaseErrorResponse;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.Provider;
+public class ForbiddenException extends RuntimeException {
 
-@Provider
-public class NotImplementedExceptionMapper
-    implements ExceptionMapper<NotImplementedException> {
+    public ForbiddenException() {
+        super();
+    }
 
-    @Override
-    public Response toResponse(NotImplementedException exception) {
-        BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
-            .setCode("501")
-            .setFriendlyMessage("NOT IMPLEMENTED")
-            .setTechnicalMessage(exception.getMessage());
-
-        return Response.status(501).entity(response).build();
+    public ForbiddenException(String message) {
+        super(message);
     }
 }

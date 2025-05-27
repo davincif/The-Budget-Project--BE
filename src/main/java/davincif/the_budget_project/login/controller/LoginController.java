@@ -16,7 +16,6 @@ limitations under the License
 
 package davincif.the_budget_project.login.controller;
 
-import davincif.the_budget_project.login.dto.UserDTO;
 import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.response.LoginResponse;
 import davincif.the_budget_project.login.service.UserService;
@@ -39,13 +38,9 @@ public class LoginController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest loginRequest) {
-        UserDTO existentUser =
-            this.userService.getUser(loginRequest.getEmail());
+        LoginResponse loginUser = this.userService.loginUser(loginRequest);
 
-        LoginResponse loginResponse =
-            this.userService.generateUserToken(existentUser);
-
-        return Response.ok(200).entity(loginResponse).build();
+        return Response.ok(200).entity(loginUser).build();
     }
 
     @POST

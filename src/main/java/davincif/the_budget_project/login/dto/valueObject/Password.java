@@ -18,18 +18,22 @@ package davincif.the_budget_project.login.dto.valueObject;
 
 import davincif.the_budget_project.login.exception.InvalidArgumentException;
 import io.quarkus.elytron.security.common.BcryptUtil;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 public record Password(String value) {
     public static final int MIN_LENGTH = 6;
     public static final int MAX_LENGTH = 60;
     public static final int ITERATION_COUNT = 12;
+    public static final byte[] SALT = ConfigProvider.getConfig()
+        .getValue("bcrypt.salt", String.class)
+        .getBytes();
 
     public Password(String value) {
         this.value = this.encrypt(this.guaranteedValid(value));
     }
 
     public String encrypt(String password) {
-        return BcryptUtil.bcryptHash(password, Password.ITERATION_COUNT);
+        return BcryptUtil.bcryptHash(password, Password.ITERATION_COUNT, SALT);
     }
 
     private String guaranteedValid(String password)
