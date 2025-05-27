@@ -29,8 +29,11 @@ public class NotImplementedExceptionMapper
     public Response toResponse(NotImplementedException exception) {
         BaseErrorResponse<Void> response = new BaseErrorResponse<Void>()
             .setCode("501")
-            .setFriendlyMessage("NOT IMPLEMENTED")
-            .setTechnicalMessage(exception.getMessage());
+            .setFriendlyMessage("NOT IMPLEMENTED");
+
+        if (exception.getMessage() != null) {
+            response.setTechnicalMessage(exception.getMessage());
+        }
 
         return Response.status(501).entity(response).build();
     }

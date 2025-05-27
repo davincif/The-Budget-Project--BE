@@ -16,11 +16,14 @@ limitations under the License
 
 package davincif.the_budget_project.login.controller;
 
+import davincif.the_budget_project.login.exception.NotImplementedException;
+import davincif.the_budget_project.login.exception.NotImplementedExceptionMapper;
 import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.response.LoginResponse;
 import davincif.the_budget_project.login.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -53,5 +56,15 @@ public class LoginController {
             );
 
         return Response.status(201).build();
+    }
+
+    @PATCH
+    @Path("/register")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateRegistry() {
+        this.userService.updateUser();
+
+        return new NotImplementedExceptionMapper()
+            .toResponse(new NotImplementedException());
     }
 }

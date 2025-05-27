@@ -76,6 +76,10 @@ public class UserService {
         return loginResponse;
     }
 
+    public void updateUser() {
+        // code
+    }
+
     private LoginResponse generateUserToken(UserDTO userDTO) {
         TokenDTO token = new TokenDTO(userDTO);
 
