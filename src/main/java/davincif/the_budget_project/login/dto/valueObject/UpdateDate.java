@@ -16,6 +16,7 @@ limitations under the License
 
 package davincif.the_budget_project.login.dto.valueObject;
 
+import davincif.the_budget_project.login.exception.InvalidArgumentException;
 import java.time.LocalDateTime;
 
 public record UpdateDate(LocalDateTime value) {
@@ -23,7 +24,16 @@ public record UpdateDate(LocalDateTime value) {
         this.value = this.guaranteedValidDate(value);
     }
 
-    private LocalDateTime guaranteedValidDate(LocalDateTime birthdayDate) {
-        return birthdayDate;
+    private LocalDateTime guaranteedValidDate(LocalDateTime date)
+        throws InvalidArgumentException {
+        LocalDateTime now = LocalDateTime.now();
+
+        if (date.isAfter(now)) {
+            throw new InvalidArgumentException(
+                "UpdateDate cannot be in the past: " + date
+            );
+        }
+
+        return date;
     }
 }

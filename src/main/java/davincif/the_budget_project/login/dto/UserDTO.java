@@ -43,15 +43,23 @@ public class UserDTO {
 
     private boolean isActive = false;
 
-    private UpdateDate createdAt = new UpdateDate(LocalDateTime.now());
+    private UpdateDate createdAt;
 
     private UpdateDate updatedAt;
 
     private BirthdayDate birthDay;
 
     public static UserDTO of(String email, String password) {
-        return new UserDTO()
+        return UserDTO.startWithBasicMandatoryInferableAtt()
             .setEmail(new Email(email))
             .setPassword(new Password(password));
+    }
+
+    public static UserDTO startWithBasicMandatoryInferableAtt() {
+        LocalDateTime now = LocalDateTime.now();
+
+        return new UserDTO()
+            .setCreatedAt(new UpdateDate(now))
+            .setUpdatedAt(new UpdateDate(now));
     }
 }

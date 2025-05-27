@@ -63,13 +63,14 @@ public class UserEntity extends PanacheEntityBase {
     @NotNull
     private LocalDateTime createdAt;
 
+    @NotNull
     private LocalDateTime updatedAt;
 
     private LocalDate birthDay;
 
     public UserEntity userEntity() {
-        this.setCreatedAt(LocalDateTime.now());
-        this.setActive(true);
+        LocalDateTime now = LocalDateTime.now();
+        this.setCreatedAt(now).setUpdatedAt(now).setActive(true);
 
         return this;
     }

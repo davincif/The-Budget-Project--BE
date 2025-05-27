@@ -16,6 +16,7 @@ limitations under the License
 
 package davincif.the_budget_project.login.dto.valueObject;
 
+import davincif.the_budget_project.login.exception.InvalidArgumentException;
 import java.util.regex.Pattern;
 
 public record Email(String value) {
@@ -27,16 +28,16 @@ public record Email(String value) {
         this.value = this.guaranteedValid(value);
     }
 
-    private String guaranteedValid(String email) {
-        // TODO: MAKE A BETTER ERROR TREATMENT
+    private String guaranteedValid(String email)
+        throws InvalidArgumentException {
         if (email == null) {
-            throw new IllegalArgumentException("E-mail can't be null");
+            throw new InvalidArgumentException("E-mail can't be null");
         }
 
         String trimmedLowerCaseEmail = email.trim().toLowerCase();
 
         if (!Email.REGEX.matcher(trimmedLowerCaseEmail).matches()) {
-            throw new IllegalArgumentException(
+            throw new InvalidArgumentException(
                 "E-mail is not valid: " + trimmedLowerCaseEmail
             );
         }

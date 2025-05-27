@@ -20,6 +20,8 @@ import davincif.the_budget_project.login.dto.TokenDTO;
 import davincif.the_budget_project.login.dto.UserDTO;
 import davincif.the_budget_project.login.dto.valueObject.Email;
 import davincif.the_budget_project.login.entity.UserEntity;
+import davincif.the_budget_project.login.exception.InvalidArgumentException;
+import davincif.the_budget_project.login.exception.UserAlreadyExistsException;
 import davincif.the_budget_project.login.exception.UserNotFoundException;
 import davincif.the_budget_project.login.mapper.LoginMapper;
 import davincif.the_budget_project.login.mapper.UserMapper;
@@ -39,7 +41,7 @@ public class UserService {
     private LoginMapper loginMapper;
 
     public Optional<UserDTO> searchUser(String email)
-        throws IllegalArgumentException {
+        throws InvalidArgumentException {
         Email Email = new Email(email);
 
         Optional<UserEntity> user = UserEntity.findByEmail(Email.value());
@@ -55,7 +57,7 @@ public class UserService {
 
     @Transactional
     public void createUser(String email, String password)
-        throws IllegalArgumentException {
+        throws InvalidArgumentException {
         UserDTO userDTO = UserDTO.of(email, password).setActive(true);
 
         this.guaranteeNonExistingUser(email);
@@ -86,13 +88,14 @@ public class UserService {
         return userDTOToLoginResponse;
     }
 
-    private void guaranteeNonExistingUser(String email) {
+    private void guaranteeNonExistingUser(String email)
+        throws UserAlreadyExistsException {
         Email Email = new Email(email);
 
         Optional<UserEntity> user = UserEntity.findByEmail(Email.value());
 
         if (user.isPresent()) {
-            throw new IllegalArgumentException(
+            throw new UserAlreadyExistsException(
                 "This user already exists. Try logging in"
             );
         }

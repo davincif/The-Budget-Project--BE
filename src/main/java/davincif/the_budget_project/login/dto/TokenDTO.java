@@ -99,7 +99,8 @@ public class TokenDTO {
         this.iat = NOW.toEpochSecond(TokenDTO.OFFSET);
     }
 
-    public TokenDTO setTokenLongevityInSeconds(int seconds) {
+    public TokenDTO setTokenLongevityInSeconds(int seconds)
+        throws IllegalArgumentException {
         if (seconds <= 0) {
             throw new IllegalArgumentException(
                 "Token longevity must be greater than zero."

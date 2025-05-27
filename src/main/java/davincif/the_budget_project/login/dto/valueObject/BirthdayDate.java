@@ -16,22 +16,24 @@ limitations under the License
 
 package davincif.the_budget_project.login.dto.valueObject;
 
+import davincif.the_budget_project.login.exception.InvalidArgumentException;
 import java.time.LocalDate;
 import java.time.Period;
 
 public record BirthdayDate(LocalDate value) {
     public static final int MIN_AGE = 7;
-    public static final int MAX_AGE = 20;
+    public static final int MAX_AGE = 120;
 
     public BirthdayDate(LocalDate value) {
         this.value = this.guaranteedValid(value);
     }
 
-    private LocalDate guaranteedValid(LocalDate birthdayDate) {
+    private LocalDate guaranteedValid(LocalDate birthdayDate)
+        throws InvalidArgumentException {
         int age = Period.between(birthdayDate, LocalDate.now()).getYears();
 
         if (age < BirthdayDate.MIN_AGE || age > BirthdayDate.MAX_AGE) {
-            throw new IllegalArgumentException(
+            throw new InvalidArgumentException(
                 "user must be between " +
                 BirthdayDate.MIN_AGE +
                 " and " +

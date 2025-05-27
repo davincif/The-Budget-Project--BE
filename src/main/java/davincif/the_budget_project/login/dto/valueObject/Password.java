@@ -16,6 +16,7 @@ limitations under the License
 
 package davincif.the_budget_project.login.dto.valueObject;
 
+import davincif.the_budget_project.login.exception.InvalidArgumentException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 
 public record Password(String value) {
@@ -32,9 +33,9 @@ public record Password(String value) {
     }
 
     private String guaranteedValid(String password)
-        throws IllegalArgumentException {
+        throws InvalidArgumentException {
         if (password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException(
+            throw new InvalidArgumentException(
                 "password can't be null nor empty"
             );
         }
@@ -44,7 +45,7 @@ public record Password(String value) {
             trimmedPassword.length() < Password.MIN_LENGTH ||
             trimmedPassword.length() > Password.MAX_LENGTH
         ) {
-            throw new IllegalArgumentException(
+            throw new InvalidArgumentException(
                 "password must be between " +
                 Password.MIN_LENGTH +
                 " and " +

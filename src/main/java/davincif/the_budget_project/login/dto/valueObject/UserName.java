@@ -16,6 +16,8 @@ limitations under the License
 
 package davincif.the_budget_project.login.dto.valueObject;
 
+import davincif.the_budget_project.login.exception.InvalidArgumentException;
+
 public record UserName(String value) {
     public static final int MIN_LENGTH = 3;
     public static final int MAX_LENGTH = 121;
@@ -24,10 +26,11 @@ public record UserName(String value) {
         this.value = this.guaranteedValid(value);
     }
 
-    private String guaranteedValid(String userName) {
+    private String guaranteedValid(String userName)
+        throws InvalidArgumentException {
         // TODO: MAKE A BETTER ERROR TREATMENT
         if (userName == null || userName.trim().isEmpty()) {
-            throw new IllegalArgumentException(
+            throw new InvalidArgumentException(
                 "user name can't be null nor empty"
             );
         }
@@ -37,7 +40,7 @@ public record UserName(String value) {
             trimmedUserName.length() < UserName.MIN_LENGTH ||
             trimmedUserName.length() > UserName.MAX_LENGTH
         ) {
-            throw new IllegalArgumentException(
+            throw new InvalidArgumentException(
                 "user name must be between " +
                 UserName.MIN_LENGTH +
                 " and " +
