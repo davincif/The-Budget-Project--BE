@@ -24,6 +24,7 @@ import davincif.the_budget_project.login.entity.UserEntity;
 import davincif.the_budget_project.login.exception.ForbiddenException;
 import davincif.the_budget_project.login.exception.InvalidArgumentException;
 import davincif.the_budget_project.login.exception.UserAlreadyExistsException;
+import davincif.the_budget_project.login.exception.UserNotFoundException;
 import davincif.the_budget_project.login.mapper.LoginMapper;
 import davincif.the_budget_project.login.mapper.UserMapper;
 import davincif.the_budget_project.login.request.LoginRequest;
@@ -55,22 +56,18 @@ public class UserService {
     }
 
     public LoginResponse loginUser(LoginRequest loginRequest) {
-        Optional<UserEntity> user = validateEmailAndFindUser(
-            loginRequest.getEmail()
-        );
+        UserEntity user = validateEmailAndFindUser(loginRequest.getEmail());
 
         if (
-            user.isEmpty() ||
             !this.doesPasswordMatches(
                     loginRequest.getPassword(),
-                    user.get().getPassword()
+                    user.getPassword()
                 )
         ) {
-            System.out.println("não é igual!!");
             throw new ForbiddenException();
         }
 
-        UserDTO userDTO = userMapper.userEntityToDTO(user.get());
+        UserDTO userDTO = userMapper.userEntityToDTO(user);
         LoginResponse loginResponse = this.generateUserToken(userDTO);
 
         return loginResponse;
@@ -110,22 +107,18 @@ public class UserService {
             passwordToBeChecked
         );
 
-        System.out.println(passwordToBeChecked + '\n');
-        System.out.println(encryptedPassword + '\n');
-        System.out.println(encryptedPasswordToBeChecked.value() + '\n');
-        System.out.println(
-            "== " +
-            encryptedPassword.equals(encryptedPasswordToBeChecked.value())
-        );
-
         return encryptedPassword.equals(encryptedPasswordToBeChecked.value());
     }
 
-    private Optional<UserEntity> validateEmailAndFindUser(String email) {
+    private UserEntity validateEmailAndFindUser(String email) {
         Email EmailObj = new Email(email);
 
         Optional<UserEntity> user = UserEntity.findByEmail(EmailObj.value());
 
-        return user;
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("user does not exists");
+        }
+
+        return user.get();
     }
 }

@@ -48,7 +48,7 @@ paths:
         "404":
           description: >-
             The user does not exist in the system - That could be an invitation
-            for registry
+            for registry.
           $ref: "#/components/responses/NotFoundError"
         "500":
           $ref: "#/components/responses/InternalServerError"
@@ -56,7 +56,7 @@ paths:
 
   /login/register:
     post:
-      summary: register
+      summary: register a new user
       deprecated: false
       description: ""
       tags: []
@@ -78,6 +78,28 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
       security: []
+    patch:
+      summary: update the register of a user.
+      deprecated: false
+      description: ""
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateInfoRequest"
+      responses:
+        "200":
+          description: "User info updated"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "404":
+          description: >-
+            The user does not exist in the system.
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
 
 components:
@@ -122,6 +144,17 @@ components:
           type: string
       required:
         - token
+
+    UserUpdateInfoRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        nickName:
+          type: string
+        birthDay:
+          type: string
+      # required:
 
   securitySchemes: {}
 

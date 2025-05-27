@@ -21,6 +21,7 @@ import davincif.the_budget_project.login.exception.NotImplementedExceptionMapper
 import davincif.the_budget_project.login.request.LoginRequest;
 import davincif.the_budget_project.login.response.LoginResponse;
 import davincif.the_budget_project.login.service.UserService;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.PATCH;
@@ -60,6 +61,7 @@ public class LoginController {
 
     @PATCH
     @Path("/register")
+    @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateRegistry() {
         this.userService.updateUser();
