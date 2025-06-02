@@ -28,8 +28,11 @@ import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 
 @Path("/login")
 @Produces(MediaType.APPLICATION_JSON)
@@ -63,7 +66,20 @@ public class LoginController {
     @Path("/register")
     @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateRegistry() {
+    public Response updateRegistry(
+        @Context HttpHeaders headers,
+        @Context SecurityContext securityContext,
+        String body
+    ) {
+        System.out.println("[DEBUG] Headers: " + headers.getRequestHeaders());
+        System.out.println(
+            "[DEBUG] User Principal: " +
+            (securityContext.getUserPrincipal() != null
+                    ? securityContext.getUserPrincipal().getName()
+                    : "null")
+        );
+        System.out.println("[DEBUG] Body: " + body);
+
         this.userService.updateUser();
 
         return new NotImplementedExceptionMapper()
